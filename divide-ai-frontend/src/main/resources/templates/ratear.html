@@ -1,0 +1,228 @@
+<html>
+
+    <head>
+        <title>Divide aí!</title>
+        <link rel="stylesheet" href="/divide-ai-app/css/bootstrap.min.css">
+        <script src="/divide-ai-app/js/bootstrap.min.js"></script>
+
+        <style>
+            .table thead th {
+                border-bottom: 1px solid #d7d7d7;
+            }
+
+            .table td, .table th {
+                border-top: none;
+            }
+
+            .btn-outline-secondary {
+                color: #404040;
+                border-color: #c7c7c7;
+                border-radius: 20px;
+            }
+
+            .btn-secondary {
+                border-radius: 20px;
+            }
+
+            .alert {
+                padding: 0.4rem 1.25rem;
+            }
+
+            hr {
+                border-top: 1px solid #8c8c8c;
+            }
+        </style>
+    </head>
+
+    <body class="bg-light">
+        <div class="container w-50">
+            <div class="py-5">
+                <h1>Divide aí!</h1>
+                <p class="lead">Uma ferramenta simples para dividir a conta</p>
+            </div>
+
+            <div class="row">
+                <div class="col-12">
+                    <p class="alert alert-success" role="alert" th:if="${sucess != null}" th:text="${sucess}" id="message" />
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-12">
+                    <h2><td th:text="${conta.descricao}"></td></h2>
+                    <hr class="col-12"/>
+                </div>
+            </div>
+
+            <div th:switch="${participantes.size()}">
+                <div class="row">
+                    <div class="col-12">
+                        <label th:case="0" class="col-12 col-form-label" style="font-size: 20px;">Começe adicionando você!</label>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-12">
+                        <div th:case="*">
+                            <table id="participanteTable" class="table table-sm" style="margin-left: 15px;">
+                                <thead>
+                                    <tr>
+                                        <th>Nome</th>
+                                        <th>Itens pedidos</th>
+                                        <th>Valor</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr th:each="participante : ${participantes}">
+                                        <td th:text="${participante.nome}"></td>
+                                        <td th:text="${participante.qtdItens}"></td>
+                                        <td th:text="${#numbers.formatCurrency(participante.valorTotal)}"></td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="row">
+                <div class="col-12">
+                    <a class="col-4 btn btn-outline-secondary" 
+                       style="margin-left: 15px"
+                       role="button" 
+                       th:href="@{/addParticipante}" id="addItem">Adicionar participante</a>
+                </div>
+            </div>
+
+            <div th:if="${participantes.size()} gt 0" style="margin-top: 25px;">
+
+                <div th:switch="${itens.size()}">
+
+                    <div class="row">
+                        <div class="col-12">
+                            <label th:case="0" class="col-12 col-form-label" style="font-size: 20px;">Agora adicione seus amigos e depois os itens que vocês pediram</label>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-12">
+                            <div th:case="*">
+                                <table id="itensTable" class="table table-sm" style="margin-left: 15px">
+                                    <thead>
+                                        <tr>
+                                            <th>Descrição</th>
+                                            <th>Valor</th>
+                                            <th>Quem pediu</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr th:each="item : ${itens}">
+                                            <td th:text="${item.descricao}"></td>
+                                            <td th:text="${#numbers.formatCurrency(item.valor)}"></td>
+                                            <td th:text="${item.participante.nome}"></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+                <div class="row">
+                    <div class="col-12">
+                        <a class="col-4 btn btn-outline-secondary" 
+                           style="margin-left: 15px"
+                           role="button" 
+                           th:href="@{/addItem}" 
+                           id="addItem">Adicionar Item</a>
+                    </div>
+                </div>
+
+            </div>
+
+            <div th:if="${itens.size()} gt 0" style="margin-top: 25px;">
+
+                <div th:switch="${adicionais.size()}">
+
+                    <div class="row">
+                        <div class="col-12">
+                            <label th:case="0" class="col-12 col-form-label" style="font-size: 20px;">Por fim, adicione os demais valores, como taxas e descontos (se houver)</label>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-12">
+                            <div th:case="*">
+                                <table id="todoTable" class="table table-sm" style="margin-left: 15px">
+                                    <thead>
+                                        <tr>
+                                            <th>Descrição</th>
+                                            <th>Tipo</th>
+                                            <th>Valor</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr th:each="adicional : ${adicionais}">
+                                            <td th:text="${adicional.descricao}"></td>
+                                            <td th:text="${adicional.categoria}"></td>
+                                            <td th:text="${adicional.valorFormatado}"></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+
+                <div class="row">
+                    <div class="col-12">
+                        <a class="col-4 btn btn-outline-secondary" 
+                           style="margin-left: 15px"
+                           role="button" 
+                           th:href="@{/addValorAdicional}" 
+                           id="addValorAdicional">Adicionar valor</a>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="row" style="
+                 margin-top: 30px;
+                 ">
+                <div class="col-12" style="
+                     border-radius: 10px;
+                     margin-left: 15px;
+                     border-style: dashed;
+                     border-width: 1px;
+                     border-color: #838383;
+                     ">
+                    <div class="text-right" style="
+                         margin-top: 8px;
+                         ">
+                        <h4>Subtotal: <td th:text="${#numbers.formatCurrency(conta.subTotal)}"></td></h4>
+                        <h4>Total: <td th:text="${#numbers.formatCurrency(conta.total)}"></td></h4>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-12">
+                    <hr class="col-12"/>
+                </div>
+            </div>
+
+            <div class="row">
+                <div class="col-12">
+                    <div th:if="${participantes.size()} gt 0 and ${itens.size()} gt 0">
+                        <a class="col-sm-12 btn btn-secondary" role="button" th:href="@{/pagar}" id="pagar">Dividir e pagar</a>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</body>
+
+</html>

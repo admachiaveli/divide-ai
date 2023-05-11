@@ -1,0 +1,42 @@
+<html>
+
+    <head>
+        <title>Divide aí!</title>
+        <link rel="stylesheet" href="/divide-ai-app/css/bootstrap.min.css">
+        <script src="/divide-ai-app/js/bootstrap.min.js"></script>
+        
+        <style>
+            .form-control {
+                   border-radius: 5px; 
+            }
+            
+            .btn-outline-secondary {
+                color: #404040;
+                border-color: #c7c7c7;
+                border-radius: 20px;
+            }
+        </style>
+    </head>
+
+    <body class="bg-light">
+        <div class="container w-50">
+            <div class="py-5">
+                <h1>Divide aí!</h1>
+                <p class="lead">Uma ferramenta simples para dividir a conta</p>
+            </div>
+            <p class="alert alert-danger" role="alert" th:if="${error != null}" th:text="${error}" id="message" />
+            <form action="saveConta" method="post" th:object="${conta}">
+                <div class="form-group row">
+                    <label class="col-sm-12 col-form-label" style="font-size: 25px;">Vamos começar?</label>
+                    <label class="col-sm-12 col-form-label">Informe uma descrição para a conta que você quer dividir</label>
+                    <div class="col-sm-12">
+                        <input th:field="*{descricao}" class="form-control" id="descricao">
+                    </div>
+                </div>
+                
+                <input type="submit" value="Salvar" class="col-sm-12 btn btn-outline-secondary" id="saveButton">
+            </form>
+        </div>
+    </body>
+
+</html>

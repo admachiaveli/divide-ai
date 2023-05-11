@@ -1,0 +1,104 @@
+<html>
+
+    <head>
+        <title>Divide aí!</title>
+        <link rel="stylesheet" href="/divide-ai-app/css/bootstrap.min.css">
+        <script src="/divide-ai-app/js/bootstrap.min.js"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+        <script src="/divide-ai-app/js/mask.money.js"></script>
+
+        <style>
+            .form-control {
+                border-radius: 5px;
+            }
+
+            .btn-outline-secondary {
+                color: #404040;
+                border-color: #c7c7c7;
+                border-radius: 20px;
+            }
+        </style>
+
+        <script>
+            $(function () {
+                $('.valor').maskMoney({
+                    allowNegative: true,
+                    thousands: '.', decimal: ',',
+                    affixesStay: true});
+            });
+        </script>
+
+    </head>
+
+    <body class="bg-light">
+        <div class="container w-50">
+
+            <div class="py-5">
+                <h1>Divide aí!</h1>
+                <p class="lead">Uma ferramenta simples para dividir a conta</p>
+            </div>
+
+            <p class="alert alert-danger" role="alert" th:if="${error != null}" th:text="${error}" id="message" />
+            <form action="saveValorAdicional" method="post" th:object="${adicional}">
+
+
+                <div class="row">
+                    <div class="col-sm-12">
+                        <label class="col-sm-12 col-form-label">Informe uma descrição para o valor</label>
+                        <div class="col-sm-12">
+                            <input th:field="*{descricao}" class="form-control" id="descricao">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-sm-12">
+                        <label class="col-sm-12 col-form-label">Qual o valor?</label>
+                        <div class="col-sm-12">
+                            <input th:field="*{valor}" class="form-control valor" id="valor">
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-sm-12">
+                        <label class="col-sm-12 col-form-label">Qual o tipo do valor?</label>
+                        <div class="col-sm-12">
+                            <div class="custom-control custom-radio custom-control-inline">
+                                <input type="radio" id="taxa" name="taxa" class="custom-control-input" value="taxa" th:field="*{categoria}" th:checked="true">
+                                <label class="custom-control-label" for="taxa">Taxa</label>
+                            </div>
+                            <div class="custom-control custom-radio custom-control-inline">
+                                <input type="radio" id="desconto" name="desconto" class="custom-control-input" value="desconto" th:field="*{categoria}">
+                                <label class="custom-control-label" for="desconto">Desconto</label>
+                            </div>
+                        </div>
+                        <label class="col-sm-12 col-form-label" style="font-size: 12px;color: #505050;">Se for taxa o valor é adicionado, já se for desconto o valor será subtraido.</label>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-sm-12">
+                        <label class="col-sm-12 col-form-label">O valor já está convertido ou é porcentagem?</label>
+                        <div class="col-sm-10">
+                            <select th:field="*{idTipoValor}">
+                                <option th:each="tipo : ${tiposValor}" th:value="${tipo.idTipoValor}" th:text="${tipo.sigla}">
+                                </option>
+                            </select>
+                        </div>
+                        <label class="col-sm-12 col-form-label" style="font-size: 12px;color: #505050;">Importante! Se o valor for porcentagem ele será calculado com base no subtotal, não incluindo descontos e outras taxas.</label>
+                    </div>
+                </div>
+
+                <div class="row" style="margin-top: 30px;">
+                    <div class="col-sm-12">
+                        <input type="submit" value="Salvar" class="col-sm-12 btn btn-outline-secondary" id="saveButton">
+                    </div>
+                </div>
+
+
+            </form>
+        </div>
+    </body>
+
+</html>

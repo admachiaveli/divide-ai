@@ -1,0 +1,44 @@
+<html>
+
+    <head>
+        <title>Ratear</title>
+        <link rel="stylesheet" href="/divide-ai-app/css/bootstrap.min.css">
+        <script src="/divide-ai-app/js/bootstrap.min.js"></script>
+    </head>
+
+    <body class="bg-light">
+        <div class="container w-75">
+            <div class="py-5 text-center">
+                <h1>Contas</h1>
+                <p class="lead">Ferramenta simples de rateamento</p>
+            </div>
+            <p class="alert alert-success" role="alert" th:if="${sucess != null}" th:text="${sucess}" id="message" />
+            <div th:switch="${contas.size()}">
+                <h2 th:case="0">Nenhuma conta!</h2>
+                <div th:case="*">
+                    <table id="todoTable" class="table table-hover">
+                        <thead class="thead-dark">
+                            <tr>
+                                <th>Descrição</th>
+                                <th>Subtotal</th>
+                                <th>Total</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr th:each="conta : ${contas}">
+                                <td th:text="${conta.descricao}"></td>
+                                <td th:text="${conta.subTotal}"></td>
+                                <td th:text="${conta.total}"></td>
+                                <td><a class="btn btn-outline-danger btn-sm" th:href="@{/selectConta(idConta=${conta.idConta})}">Ratear</a>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <a class="btn btn-outline-secondary" role="button" th:href="@{/addConta}" id="addConta">Adicionar conta</a>
+        </div>
+    </body>
+
+</html>
