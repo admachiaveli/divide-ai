@@ -10,17 +10,17 @@ import org.springframework.stereotype.Controller;
 
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.client.RestTemplate;
 
 @Controller
-public class ValorAdicionalController  {
-    
+public class ValorAdicionalController {
+
     @Autowired
     UtilController util;
-    
+
     private Conta contaAtiva;
-    
 
     @GetMapping("addValorAdicional")
     public String add(Model model) {
@@ -34,25 +34,25 @@ public class ValorAdicionalController  {
     @PostMapping("saveValorAdicional")
     public String save(ValorAdicional adicional, Model model) {
         try {
-            
+
             //Verifica se é taxa ou desconto e seta o número positivo ou negativo
-            if(adicional.getValor() != null && adicional.getValor().compareTo(BigDecimal.ZERO) > 0){   
+            if (adicional.getValor() != null && adicional.getValor().compareTo(BigDecimal.ZERO) > 0) {
                 adicional.setValor(adicional.getCategoria().equals("taxa") == true ? adicional.getValor().abs() : adicional.getValor().negate());
             }
-            
+
             RestTemplate restTemplate = new RestTemplate();
             restTemplate.postForObject(
                     util.getBackendURL() + "/divide-ai-backend/valor-adicional/" + util.getIdContaAtiva(),
                     adicional, Object.class
             );
             model.addAttribute("sucess", "Valor salvo!");
-            
+
             contaAtiva = util.getContaPorId(util.getIdContaAtiva());
             model.addAttribute("conta", contaAtiva);
             model.addAttribute("participantes", util.getParticipantesPorConta(new Long(contaAtiva.getIdConta())));
             model.addAttribute("itens", util.getItensPorConta(new Long(contaAtiva.getIdConta())));
             model.addAttribute("adicionais", util.getValoresAdicionaisPorConta(new Long(contaAtiva.getIdConta())));
-            
+
             return "ratear";
         } catch (Exception e) {
             Pattern compile = Pattern.compile("message\":\"(.*)\",");
@@ -65,7 +65,7 @@ public class ValorAdicionalController  {
             model.addAttribute("tiposValor", util.getTiposValor());
         }
     }
-    
+
     public Conta getContaAtiva() {
         return contaAtiva;
     }
@@ -74,14 +74,18 @@ public class ValorAdicionalController  {
         this.contaAtiva = contaAtiva;
     }
 
-//	@GetMapping("delete/{id}")
-//	public String delete(@PathVariable Long id, Model model) {
-//		RestTemplate restTemplate = new RestTemplate();
-//		restTemplate.delete(getBackendURL() + "/tasks-backend/participante/" + id);			
-//		model.addAttribute("success", "Success!");
-//		model.addAttribute("participantes", getParticipantes());
-//		return "index";
-//	}
-//
-//	
+    @GetMapping("deleteValorAdicional/{idValorAdicional}")
+    public String delete(@PathVariable Long idValorAdicional, Model model) {
+        RestTemplate restTemplate = new RestTemplate();
+        restTemplate.delete(util.getBackendURL() + "/divide-ai-backend/valor-adicional/" + idValorAdicional);
+        model.addAttribute("success", "Valor excluído!");
+
+        contaAtiva = util.getContaPorId(util.getIdContaAtiva());
+        model.addAttribute("conta", contaAtiva);
+        model.addAttribute("participantes", util.getParticipantesPorConta(new Long(contaAtiva.getIdConta())));
+        model.addAttribute("itens", util.getItensPorConta(new Long(contaAtiva.getIdConta())));
+        model.addAttribute("adicionais", util.getValoresAdicionaisPorConta(new Long(contaAtiva.getIdConta())));
+
+        return "ratear";
+    }
 }

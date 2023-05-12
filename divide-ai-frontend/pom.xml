@@ -37,7 +37,7 @@
     </dependencies>
 
     <build>
-        <finalName>tasks</finalName>
+        <finalName>divide-ai</finalName>
         <plugins>
             <plugin>
                 <groupId>org.springframework.boot</groupId>

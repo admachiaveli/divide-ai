@@ -17,7 +17,9 @@ import io.github.admachiaveli.divideaibackend.repo.ItemRepo;
 import io.github.admachiaveli.divideaibackend.utils.ValidationException;
 import io.github.admachiaveli.divideaibackend.repo.ParticipanteRepo;
 import java.math.BigDecimal;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.ResponseStatus;
 
 @RestController
 @RequestMapping(value ="/item")
@@ -66,12 +68,14 @@ public class ItemController {
                 }
                 
 		Item saved = itemRepo.save(item);
-                participante.setValorTotal(participante.getValorTotal().add(saved.getValor()));
-                int itens = participante.getQtdItens();
-                itens++;
-                participante.setQtdItens(itens);
-                participanteRepo.save(participante);
                 
 		return new ResponseEntity<Item>(saved, HttpStatus.CREATED);
 	}
+        
+        @DeleteMapping("/{idItem}")
+        @ResponseStatus(code = HttpStatus.NO_CONTENT)
+        public void delete(@PathVariable Long idItem){
+            itemRepo.deleteById(idItem);
+        }      
+        
 }

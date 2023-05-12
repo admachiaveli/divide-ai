@@ -17,7 +17,9 @@ import io.github.admachiaveli.divideaibackend.repo.ContaRepo;
 import io.github.admachiaveli.divideaibackend.utils.ValidationException;
 import io.github.admachiaveli.divideaibackend.repo.ParticipanteRepo;
 import java.util.NoSuchElementException;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.ResponseStatus;
 
 @RestController
 @RequestMapping(value ="/participante")
@@ -59,6 +61,12 @@ public class ParticipanteController {
 		Participante saved = participanteRepo.save(participante);
 		return new ResponseEntity<Participante>(saved, HttpStatus.CREATED);
 	}
+        
+        @DeleteMapping("/{idParticipante}")
+        @ResponseStatus(code = HttpStatus.NO_CONTENT)
+        public void delete(@PathVariable Long idParticipante){
+            participanteRepo.deleteById(idParticipante);
+        }
         
         public Conta bucaConta(Long idConta){
             return contaRepo.findById(idConta).get();

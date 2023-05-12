@@ -13,15 +13,16 @@ import io.github.admachiaveli.divideaifrontend.model.Participante;
 import java.math.BigDecimal;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PathVariable;
 
 @Controller
-public class ParticipanteController  {
+public class ParticipanteController {
 
     @Autowired
     UtilController util;
-    
+
     private Conta contaAtiva;
-    
+
     @GetMapping("participantes")
     public String index(Model model) {
         model.addAttribute("participantes", util.getParticipantes());
@@ -40,20 +41,20 @@ public class ParticipanteController  {
     @PostMapping("saveParticipante")
     public String save(Participante participante, Model model) {
         try {
-            
+
             RestTemplate restTemplate = new RestTemplate();
             restTemplate.postForObject(
                     util.getBackendURL() + "/divide-ai-backend/participante/" + util.getIdContaAtiva(),
                     participante, Object.class
             );
             model.addAttribute("sucess", "Participante salvo!");
-            
+
             contaAtiva = util.getContaPorId(util.getIdContaAtiva());
             model.addAttribute("conta", contaAtiva);
             model.addAttribute("participantes", util.getParticipantesPorConta(new Long(contaAtiva.getIdConta())));
             model.addAttribute("itens", util.getItensPorConta(new Long(contaAtiva.getIdConta())));
             model.addAttribute("adicionais", util.getValoresAdicionaisPorConta(new Long(contaAtiva.getIdConta())));
-            
+
             return "ratear";
         } catch (Exception e) {
             Pattern compile = Pattern.compile("message\":\"(.*)\",");
@@ -62,18 +63,22 @@ public class ParticipanteController  {
             model.addAttribute("error", m.group(1));
             model.addAttribute("participante", participante);
             return "addParticipante";
-        } 
+        }
     }
 
-//    @GetMapping("delete/{id}")
-//    public String delete(@PathVariable Long id, Model model) {
-//        RestTemplate restTemplate = new RestTemplate();
-//        restTemplate.delete(getBackendURL() + "/tasks-backend/participante/" + id);
-//        model.addAttribute("success", "Success!");
-//        model.addAttribute("participantes", getParticipantes());
-//        return "index";
-//    }
-    
+    @GetMapping("deleteParticipante/{idParticipante}")
+    public String delete(@PathVariable Long idParticipante, Model model) {
+        RestTemplate restTemplate = new RestTemplate();
+        restTemplate.delete(util.getBackendURL() + "/divide-ai-backend/participante/" + idParticipante);
+        model.addAttribute("success", "Participante excluído!");
+
+        contaAtiva = util.getContaPorId(util.getIdContaAtiva());
+        model.addAttribute("conta", contaAtiva);
+        model.addAttribute("participantes", util.getParticipantesPorConta(new Long(contaAtiva.getIdConta())));
+        model.addAttribute("itens", util.getItensPorConta(new Long(contaAtiva.getIdConta())));
+        model.addAttribute("adicionais", util.getValoresAdicionaisPorConta(new Long(contaAtiva.getIdConta())));
+        return "ratear";
+    }
 
     public Conta getContaAtiva() {
         return contaAtiva;

@@ -19,7 +19,9 @@ import io.github.admachiaveli.divideaibackend.utils.ValidationException;
 import io.github.admachiaveli.divideaibackend.repo.TipoValorRepo;
 import io.github.admachiaveli.divideaibackend.repo.ValorAdicionalRepo;
 import java.math.BigDecimal;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.ResponseStatus;
 
 @RestController
 @RequestMapping(value ="/valor-adicional")
@@ -86,4 +88,10 @@ public class ValorAdicionalController {
 		ValorAdicional saved = valorAdicionalRepo.save(valorAdicional);
 		return new ResponseEntity<ValorAdicional>(saved, HttpStatus.CREATED);
 	}
+        
+        @DeleteMapping("/{idValorAdicional}")
+        @ResponseStatus(code = HttpStatus.NO_CONTENT)
+        public void delete(@PathVariable Long idValorAdicional){
+            valorAdicionalRepo.deleteById(idValorAdicional);
+        }      
 }

@@ -9,17 +9,18 @@ import org.springframework.stereotype.Controller;
 
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.client.RestTemplate;
 
 @Controller
-public class ItemController  {
-    
+public class ItemController {
+
     @Autowired
     UtilController util;
-    
+
     private Conta contaAtiva;
-    
+
     @GetMapping("itens")
     public String index(Model model) {
         model.addAttribute("itens", util.getItens());
@@ -45,13 +46,13 @@ public class ItemController  {
                     item, Object.class
             );
             model.addAttribute("sucess", "Item salvo!");
-            
+
             contaAtiva = util.getContaPorId(util.getIdContaAtiva());
             model.addAttribute("conta", contaAtiva);
             model.addAttribute("participantes", util.getParticipantesPorConta(new Long(contaAtiva.getIdConta())));
             model.addAttribute("itens", util.getItensPorConta(new Long(contaAtiva.getIdConta())));
             model.addAttribute("adicionais", util.getValoresAdicionaisPorConta(new Long(contaAtiva.getIdConta())));
-            
+
             return "ratear";
         } catch (Exception e) {
             Pattern compile = Pattern.compile("message\":\"(.*)\",");
@@ -64,7 +65,21 @@ public class ItemController  {
             model.addAttribute("participantes", util.getParticipantesPorConta(util.getIdContaAtiva()));
         }
     }
-    
+
+    @GetMapping("deleteItem/{idItem}")
+    public String delete(@PathVariable Long idItem, Model model) {
+        RestTemplate restTemplate = new RestTemplate();
+        restTemplate.delete(util.getBackendURL() + "/divide-ai-backend/item/" + idItem);
+        model.addAttribute("success", "Item excluído!");
+
+        contaAtiva = util.getContaPorId(util.getIdContaAtiva());
+        model.addAttribute("conta", contaAtiva);
+        model.addAttribute("participantes", util.getParticipantesPorConta(new Long(contaAtiva.getIdConta())));
+        model.addAttribute("itens", util.getItensPorConta(new Long(contaAtiva.getIdConta())));
+        model.addAttribute("adicionais", util.getValoresAdicionaisPorConta(new Long(contaAtiva.getIdConta())));
+        return "ratear";
+    }
+
     public Conta getContaAtiva() {
         return contaAtiva;
     }
@@ -72,15 +87,5 @@ public class ItemController  {
     public void setContaAtiva(Conta contaAtiva) {
         this.contaAtiva = contaAtiva;
     }
-
-//	@GetMapping("delete/{id}")
-//	public String delete(@PathVariable Long id, Model model) {
-//		RestTemplate restTemplate = new RestTemplate();
-//		restTemplate.delete(getBackendURL() + "/tasks-backend/participante/" + id);			
-//		model.addAttribute("success", "Success!");
-//		model.addAttribute("participantes", getParticipantes());
-//		return "index";
-//	}
-//
-//	
+    
 }

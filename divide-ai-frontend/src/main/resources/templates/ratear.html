@@ -31,6 +31,10 @@
             hr {
                 border-top: 1px solid #8c8c8c;
             }
+            
+            .btn-outline-danger {
+                border-radius: 20px;
+            }
         </style>
     </head>
 
@@ -70,6 +74,7 @@
                                         <th>Nome</th>
                                         <th>Itens pedidos</th>
                                         <th>Valor</th>
+                                        <th>Remover participante</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -77,6 +82,7 @@
                                         <td th:text="${participante.nome}"></td>
                                         <td th:text="${participante.qtdItens}"></td>
                                         <td th:text="${#numbers.formatCurrency(participante.valorTotal)}"></td>
+                                        <td><a class="btn btn-outline-danger btn-sm" th:href="@{/deleteParticipante/{idParticipante}(idParticipante=${participante.idParticipante})}">Remover</a>
                                     </tr>
                                 </tbody>
                             </table>
@@ -113,6 +119,7 @@
                                             <th>Descrição</th>
                                             <th>Valor</th>
                                             <th>Quem pediu</th>
+                                            <th>Remover item</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -120,6 +127,7 @@
                                             <td th:text="${item.descricao}"></td>
                                             <td th:text="${#numbers.formatCurrency(item.valor)}"></td>
                                             <td th:text="${item.participante.nome}"></td>
+                                            <td><a class="btn btn-outline-danger btn-sm" th:href="@{/deleteItem/{idItem}(idItem=${item.idItem})}">Remover</a>
                                         </tr>
                                     </tbody>
                                 </table>
@@ -160,6 +168,7 @@
                                             <th>Descrição</th>
                                             <th>Tipo</th>
                                             <th>Valor</th>
+                                            <th>Remover valor</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -167,6 +176,7 @@
                                             <td th:text="${adicional.descricao}"></td>
                                             <td th:text="${adicional.categoria}"></td>
                                             <td th:text="${adicional.valorFormatado}"></td>
+                                            <td><a class="btn btn-outline-danger btn-sm" th:href="@{/deleteValorAdicional/{idValorAdicional}(idValorAdicional=${adicional.idValorAdicional})}">Remover</a>
                                         </tr>
                                     </tbody>
                                 </table>

@@ -41,7 +41,8 @@ public class ContaController {
         
         @GetMapping("{idConta}")
 	public Conta findById(@PathVariable Long idConta) {
-		return calculaValoresConta(contaRepo.findById(idConta).get());
+		//return calculaValoresConta(contaRepo.findById(idConta).get());
+                return contaRepo.findById(idConta).get();
 	}
         	
 	@PostMapping
@@ -55,38 +56,38 @@ public class ContaController {
 		return new ResponseEntity<Conta>(saved, HttpStatus.CREATED);
 	}
         
-        public Conta calculaValoresConta(Conta conta){
-            
-            List<Item> itens = itemRepo.findAllByParticipanteContaIdConta(conta.getIdConta());
-            BigDecimal subTotal = BigDecimal.ZERO;
-            BigDecimal total = BigDecimal.ZERO;
-            
-            if(!itens.isEmpty()){
-                subTotal = itens.stream().map(item -> item.getValor()).reduce(BigDecimal.ZERO, BigDecimal::add);
-                total = itens.stream().map(item -> item.getValor()).reduce(BigDecimal.ZERO, BigDecimal::add);
-            }
-            
-            //verifica se existem valores adicionais
-            //Verifica valores em 'espécie'
-            List<ValorAdicional> valoresAdicionais = valorAdicionalRepo.findAllByContaIdContaAndTipoValorSigla(conta.getIdConta(), "R$");
-            if(!valoresAdicionais.isEmpty()){
-               total = total.add(valoresAdicionais.stream().map(valor -> valor.getValor()).reduce(BigDecimal.ZERO, BigDecimal::add)); 
-            }
-            
-            //Verifica valores em porcentagem
-            /*
-            Para simplificar, valores em porcentagem são considerados "taxas"
-            por isso o cálculo incide sobre o valor dos itens (Subtotal), não sendo levado em contas possíveis descontos
-            */
-            List<ValorAdicional> valoresAdicionaisPercent = valorAdicionalRepo.findAllByContaIdContaAndTipoValorSigla(conta.getIdConta(), "%");
-            if(!valoresAdicionaisPercent.isEmpty()){
-                BigDecimal totalPercent = valoresAdicionaisPercent.stream().map(valor -> valor.getValor()).reduce(BigDecimal.ZERO, BigDecimal::add);
-                total = total.add(subTotal.multiply(totalPercent).divide(new BigDecimal(100))).setScale(2);
-            }
-            
-            conta.setSubTotal(subTotal);
-            conta.setTotal(total);
-            return conta;
-        }
+//        public Conta calculaValoresConta(Conta conta){
+//            
+//            //List<Item> itens = itemRepo.findAllByParticipanteContaIdConta(conta.getIdConta());
+//            BigDecimal subTotal = conta.getSubTotal();
+//            BigDecimal total = conta.getSubTotal();
+//            
+////            if(!itens.isEmpty()){
+////                subTotal = itens.stream().map(item -> item.getValor()).reduce(BigDecimal.ZERO, BigDecimal::add);
+////                total = itens.stream().map(item -> item.getValor()).reduce(BigDecimal.ZERO, BigDecimal::add);
+////            }
+//            
+//            //verifica se existem valores adicionais
+//            //Verifica valores em 'espécie'
+//            List<ValorAdicional> valoresAdicionais = valorAdicionalRepo.findAllByContaIdContaAndTipoValorSigla(conta.getIdConta(), "R$");
+//            if(!valoresAdicionais.isEmpty()){
+//               total = total.add(valoresAdicionais.stream().map(valor -> valor.getValor()).reduce(BigDecimal.ZERO, BigDecimal::add)); 
+//            }
+//            
+//            //Verifica valores em porcentagem
+//            /*
+//            Para simplificar, valores em porcentagem são considerados "taxas"
+//            por isso o cálculo incide sobre o valor dos itens (Subtotal), não sendo levado em contas possíveis descontos
+//            */
+//            List<ValorAdicional> valoresAdicionaisPercent = valorAdicionalRepo.findAllByContaIdContaAndTipoValorSigla(conta.getIdConta(), "%");
+//            if(!valoresAdicionaisPercent.isEmpty()){
+//                BigDecimal totalPercent = valoresAdicionaisPercent.stream().map(valor -> valor.getValor()).reduce(BigDecimal.ZERO, BigDecimal::add);
+//                total = total.add(subTotal.multiply(totalPercent).divide(new BigDecimal(100))).setScale(2);
+//            }
+//            
+//            //conta.setSubTotal(subTotal);
+//            conta.setTotal(total);
+//            return conta;
+//        }
         
 }
