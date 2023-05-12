@@ -55,8 +55,11 @@ public class ParticipanteController {
         if (participante.getNome() == null || participante.getNome().equals("")) {
             throw new ValidationException("O nome do participante é obrigatório");
         }
-
-        participante.setConta(bucaConta(idConta));
+        
+        System.out.println("::::: Buscar conta ");
+        conta = bucaConta(idConta);
+        System.out.println("::::: Conta: " + conta.toString());
+        participante.setConta(conta);
         Participante saved = participanteRepo.save(participante);
         return new ResponseEntity<Participante>(saved, HttpStatus.CREATED);
     }

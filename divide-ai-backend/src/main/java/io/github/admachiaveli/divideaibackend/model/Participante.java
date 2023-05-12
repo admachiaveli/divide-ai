@@ -81,7 +81,7 @@ public class Participante {
     }
 
     public BigDecimal getValorTotal() {
-        return itens != null && !itens.isEmpty() ? itens.stream().map(item -> item.getValor()).reduce(BigDecimal.ZERO, BigDecimal::add) : BigDecimal.ZERO;
+        return valorTotal;
     }
 
     public void setValorTotal(BigDecimal valorTotal) {
@@ -102,6 +102,10 @@ public class Participante {
 
     public void setPercentual(BigDecimal percentual) {
         this.percentual = percentual;
+    }
+    
+    public void atualizarValorTotal(){
+        setValorTotal(itens != null && !itens.isEmpty() ? itens.stream().map(item -> item.getValor()).reduce(BigDecimal.ZERO, BigDecimal::add) : BigDecimal.ZERO);
     }
 
 }

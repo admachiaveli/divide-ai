@@ -50,9 +50,7 @@ public class Conta {
     }
 
     public BigDecimal getSubTotal() {
-        return participantes != null && !participantes.isEmpty()
-                ? participantes.stream().map(participante -> participante.getValorTotal()).reduce(BigDecimal.ZERO, BigDecimal::add)
-                : BigDecimal.ZERO;
+        return subTotal;
     }
 
     public void setSubTotal(BigDecimal subTotal) {
@@ -60,10 +58,38 @@ public class Conta {
     }
 
     public BigDecimal getTotal() {
+        return total;
+    }
 
-        if (participantes != null && !participantes.isEmpty()) {
+    public void setTotal(BigDecimal total) {
+        this.total = total;
+    }
+
+    public String getDescricao() {
+        return descricao;
+    }
+
+    public void setDescricao(String descricao) {
+        this.descricao = descricao;
+    }
+    
+    public void atualizarValores(){
+        atualizarSubTotal();
+        atualizarTotal();
+    }
+    
+    public void atualizarSubTotal(){
+        setSubTotal(participantes != null && !participantes.isEmpty()
+                ? participantes.stream().map(participante -> participante.getValorTotal()).reduce(BigDecimal.ZERO, BigDecimal::add)
+                : BigDecimal.ZERO);
+    }
+    
+    public void atualizarTotal(){
+        BigDecimal total = BigDecimal.ZERO;
+        
+       if (participantes != null && !participantes.isEmpty()) {
             BigDecimal subotal = participantes.stream().map(participante -> participante.getValorTotal()).reduce(BigDecimal.ZERO, BigDecimal::add);
-            BigDecimal total = subotal;
+            total = subotal;
 
             //verifica se existem valores adicionais
             if (valoresAdicionais != null && !valoresAdicionais.isEmpty()) {
@@ -90,26 +116,10 @@ public class Conta {
                     BigDecimal totalPercent = valoresAdicionaisPercent.stream().map(valor -> valor.getValor()).reduce(BigDecimal.ZERO, BigDecimal::add);
                     total = total.add(subotal.multiply(totalPercent).divide(new BigDecimal(100))).setScale(2);
                 }
-
-                return total;
             }
-            return total;
-        } else {
-            return BigDecimal.ZERO;
         }
-
-    }
-
-    public void setTotal(BigDecimal total) {
-        this.total = total;
-    }
-
-    public String getDescricao() {
-        return descricao;
-    }
-
-    public void setDescricao(String descricao) {
-        this.descricao = descricao;
+       
+        setTotal(total);
     }
 
 }

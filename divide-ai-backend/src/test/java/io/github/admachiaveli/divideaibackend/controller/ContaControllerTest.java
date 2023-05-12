@@ -1,6 +1,5 @@
 package io.github.admachiaveli.divideaibackend.controller;
 
-import io.github.admachiaveli.divideaibackend.controller.ContaController;
 import io.github.admachiaveli.divideaibackend.model.Conta;
 import io.github.admachiaveli.divideaibackend.repo.ContaRepo;
 import io.github.admachiaveli.divideaibackend.utils.ValidationException;

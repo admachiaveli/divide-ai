@@ -30,8 +30,9 @@ public class ContaController {
 
     @GetMapping("{idConta}")
     public Conta findById(@PathVariable Long idConta) {
-        //return calculaValoresConta(contaRepo.findById(idConta).get());
-        return contaRepo.findById(idConta).get();
+        Conta conta = contaRepo.findById(idConta).get();
+        conta.atualizarValores();
+        return conta;
     }
 
     @PostMapping

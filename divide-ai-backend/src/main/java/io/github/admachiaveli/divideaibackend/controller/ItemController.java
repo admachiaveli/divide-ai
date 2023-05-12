@@ -67,14 +67,22 @@ public class ItemController {
         }
 
         Item saved = itemRepo.save(item);
-
+        participante.setValorTotal(participante.getValorTotal().add(item.getValor()));
+        participanteRepo.save(participante);
+        
         return new ResponseEntity<Item>(saved, HttpStatus.CREATED);
     }
 
     @DeleteMapping("/{idItem}")
     @ResponseStatus(code = HttpStatus.NO_CONTENT)
     public void delete(@PathVariable Long idItem) {
+        Item item = itemRepo.findById(idItem).get(); 
+        Participante participante = item.getParticipante();
+        
+        participante.setValorTotal(participante.getValorTotal().subtract(item.getValor()));
+    
         itemRepo.deleteById(idItem);
+        participanteRepo.save(participante);
     }
 
 }

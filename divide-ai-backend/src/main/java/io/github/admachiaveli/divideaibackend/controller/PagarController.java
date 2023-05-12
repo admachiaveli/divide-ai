@@ -33,20 +33,27 @@ public class PagarController {
 
     public void ratear(Long idConta) {
         Conta conta = contaRepo.findById(idConta).get();
+        conta.atualizarValores();
 
         //Trazendo lista de participantes
         List<Participante> participantes = participanteRepo.findAllByContaIdConta(idConta);
 
         //Calcula o que cada participante deve pagar proporcionalmente ao valor dos itens que pediu
         for (Participante part : participantes) {
-            part.setPercentual(part.getValorTotal().multiply(new BigDecimal(100)).divide(conta.getSubTotal(), 2, RoundingMode.HALF_UP));
-            part.setValorPagar(part.getPercentual().multiply(conta.getTotal()).divide(new BigDecimal(100), 2, RoundingMode.HALF_UP));
-            part.setValorTotal(part.getValorTotal());
-            part.setQtdItens(part.getQtdItens());
+            part = calculaValorPagarParticipante(part, conta);
         }
 
         participanteRepo.saveAll(participantes);
+    }
 
+    public Participante calculaValorPagarParticipante(Participante part, Conta conta) {
+
+        part.setPercentual(part.getValorTotal().multiply(new BigDecimal(100)).divide(conta.getSubTotal(), 2, RoundingMode.HALF_UP));
+        part.setValorPagar(part.getPercentual().multiply(conta.getTotal()).divide(new BigDecimal(100), 2, RoundingMode.HALF_UP));
+        part.setValorTotal(part.getValorTotal());
+        part.setQtdItens(part.getQtdItens());
+
+        return part;
     }
 
 }
