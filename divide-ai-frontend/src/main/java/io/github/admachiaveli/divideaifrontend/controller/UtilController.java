@@ -19,9 +19,6 @@ public class UtilController {
     @Value("${backend.port}")
     private String BACKEND_PORT;
 
-    @Value("${app.version}")
-    private String VERSION;
-    
     private Long idContaAtiva;
 
     public String getBackendURL() {
@@ -41,56 +38,56 @@ public class UtilController {
         return restTemplate.getForObject(
                 getBackendURL() + "/divide-ai-backend/item", List.class);
     }
-    
+
     @SuppressWarnings("unchecked")
     public List<Participante> getParticipantesPorConta(Long id) {
         RestTemplate restTemplate = new RestTemplate();
         return restTemplate.getForObject(
                 getBackendURL() + "/divide-ai-backend/participante/" + id, List.class);
     }
-    
+
     @SuppressWarnings("unchecked")
     public List<Item> getItensPorConta(Long id) {
         RestTemplate restTemplate = new RestTemplate();
         return restTemplate.getForObject(
                 getBackendURL() + "/divide-ai-backend/item/" + id, List.class);
     }
-    
+
     @SuppressWarnings("unchecked")
     public List<ValorAdicional> getValoresAdicionaisPorConta(Long id) {
         RestTemplate restTemplate = new RestTemplate();
         return restTemplate.getForObject(
                 getBackendURL() + "/divide-ai-backend/valor-adicional/" + id, List.class);
     }
-  
+
     @SuppressWarnings("unchecked")
     public List<Conta> getContas() {
         RestTemplate restTemplate = new RestTemplate();
         return restTemplate.getForObject(
                 getBackendURL() + "/divide-ai-backend/conta", List.class);
     }
-    
+
     @SuppressWarnings("unchecked")
     public Conta getContaPorId(Long id) {
         RestTemplate restTemplate = new RestTemplate();
         return restTemplate.getForObject(
                 getBackendURL() + "/divide-ai-backend/conta/" + id, Conta.class);
     }
-    
+
     @SuppressWarnings("unchecked")
     public List<TipoValor> getTiposValor() {
         RestTemplate restTemplate = new RestTemplate();
         return restTemplate.getForObject(
                 getBackendURL() + "/divide-ai-backend/tipo-valor/", List.class);
     }
-   
-        @SuppressWarnings("unchecked")
+
+    @SuppressWarnings("unchecked")
     public List<Participante> getParticipantesPorContaPagar(Long id) {
         RestTemplate restTemplate = new RestTemplate();
         return restTemplate.getForObject(
                 getBackendURL() + "/divide-ai-backend/pagar/" + id, List.class);
     }
-    
+
     public String getBACKEND_HOST() {
         return BACKEND_HOST;
     }
@@ -107,15 +104,6 @@ public class UtilController {
         this.BACKEND_PORT = BACKEND_PORT;
     }
 
-    public String getVERSION() {
-        return VERSION;
-    }
-
-    public void setVERSION(String VERSION) {
-        this.VERSION = VERSION;
-    }
-    
-    
     public Long getIdContaAtiva() {
         return idContaAtiva;
     }

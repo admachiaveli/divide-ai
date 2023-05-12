@@ -32,7 +32,7 @@ public class ValorAdicional {
 
     @Column(name = "categoria", nullable = false)
     private String categoria;
-    
+
     @ManyToOne
     @JoinColumn(name = "id_conta")
     private Conta conta;
@@ -43,7 +43,7 @@ public class ValorAdicional {
 
     @Transient
     private int idTipoValor;
-    
+
     @Transient
     private String valorFormatado;
 
@@ -91,8 +91,8 @@ public class ValorAdicional {
     }
 
     public int getIdTipoValor() {
-        if(idTipoValor == 0){
-            if(tipoValor != null){
+        if (idTipoValor == 0) {
+            if (tipoValor != null) {
                 return tipoValor.getIdTipoValor().intValue();
             }
         }
@@ -102,7 +102,7 @@ public class ValorAdicional {
     public void setIdTipoValor(int idTipoValor) {
         this.idTipoValor = idTipoValor;
     }
-    
+
     public String getCategoria() {
         return categoria;
     }
@@ -110,15 +110,15 @@ public class ValorAdicional {
     public void setCategoria(String categoria) {
         this.categoria = categoria;
     }
-    
+
     public String getValorFormatado() {
-        if(valor != null){
-            if(tipoValor != null){
+        if (valor != null) {
+            if (tipoValor != null) {
                 DecimalFormat formatter = (DecimalFormat) NumberFormat.getCurrencyInstance(new Locale("pt", "BR"));
                 DecimalFormatSymbols symbols = formatter.getDecimalFormatSymbols();
-                symbols.setCurrencySymbol(""); 
+                symbols.setCurrencySymbol("");
                 formatter.setDecimalFormatSymbols(symbols);
-                String valorFormatado =  formatter.format(valor);
+                String valorFormatado = formatter.format(valor);
                 return tipoValor.getIdTipoValor() == 1 ? "R$ " + valorFormatado : valorFormatado + " %";
             }
         }

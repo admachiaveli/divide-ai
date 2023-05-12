@@ -11,16 +11,15 @@ import io.github.admachiaveli.divideaibackend.model.TipoValor;
 import io.github.admachiaveli.divideaibackend.repo.TipoValorRepo;
 
 @RestController
-@RequestMapping(value ="/tipo-valor")
+@RequestMapping(value = "/tipo-valor")
 public class TipoValorController {
 
-        @Autowired
-	private TipoValorRepo tipoValorRepo;
+    @Autowired
+    private TipoValorRepo tipoValorRepo;
 
+    @GetMapping
+    public List<TipoValor> findAll() {
+        return tipoValorRepo.findAll();
+    }
 
-	@GetMapping
-	public List<TipoValor> findAll() {
-		return tipoValorRepo.findAll();
-	}
- 
 }

@@ -28,9 +28,7 @@ public class ContaController {
     @GetMapping("index")
     public String index(Model model) {
         model.addAttribute("contas", util.getContas());
-        if (util.getVERSION().startsWith("build")) {
-            model.addAttribute("version", util.getVERSION());
-        }
+
         return "index";
     }
 
@@ -48,9 +46,7 @@ public class ContaController {
         model.addAttribute("participantes", util.getParticipantesPorConta(new Long(contaAtiva.getIdConta())));
         model.addAttribute("itens", util.getItensPorConta(new Long(contaAtiva.getIdConta())));
         model.addAttribute("adicionais", util.getValoresAdicionaisPorConta(new Long(contaAtiva.getIdConta())));
-        if (util.getVERSION().startsWith("build")) {
-            model.addAttribute("version", util.getVERSION());
-        }
+
         return "ratear";
     }
 
@@ -82,22 +78,5 @@ public class ContaController {
             return "addConta";
         } 
     }
-
-//    @GetMapping("delete/{id}")
-//    public String delete(@PathVariable Long id, Model model) {
-//        RestTemplate restTemplate = new RestTemplate();
-//        restTemplate.delete(getBackendURL() + "/tasks-backend/participante/" + id);
-//        model.addAttribute("success", "Success!");
-//        model.addAttribute("participantes", getParticipantes());
-//        return "index";
-//    }
-//    @GetMapping("ratear/{id}")
-//    public String ratear(@PathVariable Long id, Model model) {
-////        RestTemplate restTemplate = new RestTemplate();
-////        restTemplate.delete(getBackendURL() + "/tasks-backend/participante/" + id);
-////        model.addAttribute("success", "Success!");
-//        model.addAttribute("participantes", getParticipantes());
-//        return "ratear";
-//    }
-
+    
 }

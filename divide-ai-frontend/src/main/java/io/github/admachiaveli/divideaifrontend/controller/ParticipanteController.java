@@ -26,9 +26,7 @@ public class ParticipanteController {
     @GetMapping("participantes")
     public String index(Model model) {
         model.addAttribute("participantes", util.getParticipantes());
-        if (util.getVERSION().startsWith("build")) {
-            model.addAttribute("version", util.getVERSION());
-        }
+
         return "indexParticipante";
     }
 

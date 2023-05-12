@@ -24,74 +24,71 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
 @RestController
-@RequestMapping(value ="/valor-adicional")
+@RequestMapping(value = "/valor-adicional")
 public class ValorAdicionalController {
 
-	@Autowired
-	private ContaRepo contaRepo;
-        
-        @Autowired
-	private ValorAdicionalRepo valorAdicionalRepo;
-        
-        @Autowired
-	private TipoValorRepo tipoValorRepo;
+    @Autowired
+    private ContaRepo contaRepo;
 
+    @Autowired
+    private ValorAdicionalRepo valorAdicionalRepo;
 
-	@GetMapping
-	public List<ValorAdicional> findAll() {
-		return valorAdicionalRepo.findAll();
-	}
-        
-        @GetMapping("{idConta}")
-	public List<ValorAdicional> findAll(@PathVariable Long idConta) {
-                
-		return valorAdicionalRepo.findAllByContaIdConta(new Long(idConta));
-	}
-	
-	@PostMapping("{idConta}")
-	public ResponseEntity<ValorAdicional> save(@PathVariable Long idConta, @RequestBody ValorAdicional valorAdicional) throws ValidationException {
+    @Autowired
+    private TipoValorRepo tipoValorRepo;
 
-            
-                if(idConta == null || idConta == 0) {
-			throw new ValidationException("A conta é obrigatória");
-		}
-		if(valorAdicional.getDescricao() == null || valorAdicional.getDescricao().equals("")) {
-			throw new ValidationException("A descrição do valor é obrigatória");
-		}
-                if(valorAdicional.getValor() == null) {
-			throw new ValidationException("O valor é obrigatório");
-		}
-                if(valorAdicional.getValor().compareTo(BigDecimal.ZERO) == 0) {
-			throw new ValidationException("O valor deve ser diferente de zero");
-		}
-                if(valorAdicional.getIdTipoValor() == 0) {
-			throw new ValidationException("O tipo de valor é obrigatório");
-		}
-                
-                //Busca as entidades para salvar
-                Conta conta = contaRepo.findById(new Long(idConta)).get();
-                TipoValor tipoValor = tipoValorRepo.findById(new Long(valorAdicional.getIdTipoValor())).get();
-                
-                //Verifica se o tipo de valor informado é válido
-                if(tipoValor == null){
-                    throw new ValidationException("Ocorreu um erro ao salvar o tipo de valor escolhido, por favor tente novamente");
-                } else {
-                    valorAdicional.setTipoValor(tipoValor);
-                }
-                
-                if(conta == null){
-                    throw new ValidationException("Ocorreu um erro ao salvar, por favor tente novamente");
-                } else {
-                    valorAdicional.setConta(conta);
-                }
-                
-		ValorAdicional saved = valorAdicionalRepo.save(valorAdicional);
-		return new ResponseEntity<ValorAdicional>(saved, HttpStatus.CREATED);
-	}
-        
-        @DeleteMapping("/{idValorAdicional}")
-        @ResponseStatus(code = HttpStatus.NO_CONTENT)
-        public void delete(@PathVariable Long idValorAdicional){
-            valorAdicionalRepo.deleteById(idValorAdicional);
-        }      
+    @GetMapping
+    public List<ValorAdicional> findAll() {
+        return valorAdicionalRepo.findAll();
+    }
+
+    @GetMapping("{idConta}")
+    public List<ValorAdicional> findAll(@PathVariable Long idConta) {
+        return valorAdicionalRepo.findAllByContaIdConta(new Long(idConta));
+    }
+
+    @PostMapping("{idConta}")
+    public ResponseEntity<ValorAdicional> save(@PathVariable Long idConta, @RequestBody ValorAdicional valorAdicional) throws ValidationException {
+
+        if (idConta == null || idConta == 0) {
+            throw new ValidationException("A conta é obrigatória");
+        }
+        if (valorAdicional.getDescricao() == null || valorAdicional.getDescricao().equals("")) {
+            throw new ValidationException("A descrição do valor é obrigatória");
+        }
+        if (valorAdicional.getValor() == null) {
+            throw new ValidationException("O valor é obrigatório");
+        }
+        if (valorAdicional.getValor().compareTo(BigDecimal.ZERO) == 0) {
+            throw new ValidationException("O valor deve ser diferente de zero");
+        }
+        if (valorAdicional.getIdTipoValor() == 0) {
+            throw new ValidationException("O tipo de valor é obrigatório");
+        }
+
+        //Busca as entidades para salvar
+        Conta conta = contaRepo.findById(new Long(idConta)).get();
+        TipoValor tipoValor = tipoValorRepo.findById(new Long(valorAdicional.getIdTipoValor())).get();
+
+        //Verifica se o tipo de valor informado é válido
+        if (tipoValor == null) {
+            throw new ValidationException("Ocorreu um erro ao salvar o tipo de valor escolhido, por favor tente novamente");
+        } else {
+            valorAdicional.setTipoValor(tipoValor);
+        }
+
+        if (conta == null) {
+            throw new ValidationException("Ocorreu um erro ao salvar, por favor tente novamente");
+        } else {
+            valorAdicional.setConta(conta);
+        }
+
+        ValorAdicional saved = valorAdicionalRepo.save(valorAdicional);
+        return new ResponseEntity<ValorAdicional>(saved, HttpStatus.CREATED);
+    }
+
+    @DeleteMapping("/{idValorAdicional}")
+    @ResponseStatus(code = HttpStatus.NO_CONTENT)
+    public void delete(@PathVariable Long idValorAdicional) {
+        valorAdicionalRepo.deleteById(idValorAdicional);
+    }
 }

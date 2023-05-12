@@ -50,10 +50,9 @@ public class Conta {
     }
 
     public BigDecimal getSubTotal() {
-        return participantes != null && !participantes.isEmpty() ? 
-                    participantes.stream().map(participante -> participante.getValorTotal()).reduce(BigDecimal.ZERO, BigDecimal::add) 
-                        : 
-                    BigDecimal.ZERO;
+        return participantes != null && !participantes.isEmpty()
+                ? participantes.stream().map(participante -> participante.getValorTotal()).reduce(BigDecimal.ZERO, BigDecimal::add)
+                : BigDecimal.ZERO;
     }
 
     public void setSubTotal(BigDecimal subTotal) {
@@ -61,7 +60,7 @@ public class Conta {
     }
 
     public BigDecimal getTotal() {
-        
+
         if (participantes != null && !participantes.isEmpty()) {
             BigDecimal subotal = participantes.stream().map(participante -> participante.getValorTotal()).reduce(BigDecimal.ZERO, BigDecimal::add);
             BigDecimal total = subotal;
@@ -91,14 +90,14 @@ public class Conta {
                     BigDecimal totalPercent = valoresAdicionaisPercent.stream().map(valor -> valor.getValor()).reduce(BigDecimal.ZERO, BigDecimal::add);
                     total = total.add(subotal.multiply(totalPercent).divide(new BigDecimal(100))).setScale(2);
                 }
-                
+
                 return total;
             }
             return total;
         } else {
             return BigDecimal.ZERO;
         }
-        
+
     }
 
     public void setTotal(BigDecimal total) {

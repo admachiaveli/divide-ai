@@ -1,6 +1,5 @@
 package io.github.admachiaveli.divideaibackend.model;
 
-
 import java.math.BigDecimal;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -13,11 +12,10 @@ import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
-
 @Entity
 @Table(name = "itens")
 public class Item {
-    
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_item")
@@ -32,10 +30,10 @@ public class Item {
     @ManyToOne
     @JoinColumn(name = "id_participante")
     private Participante participante;
-    
+
     @Transient
     private int idParticipante;
-    
+
     public Item() {
     }
 
@@ -70,7 +68,7 @@ public class Item {
     public void setParticipante(Participante participante) {
         this.participante = participante;
     }
-    
+
     public int getIdParticipante() {
         return idParticipante;
     }

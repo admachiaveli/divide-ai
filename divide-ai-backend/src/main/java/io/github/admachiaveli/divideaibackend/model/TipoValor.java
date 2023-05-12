@@ -1,6 +1,5 @@
 package io.github.admachiaveli.divideaibackend.model;
 
-
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -11,7 +10,7 @@ import javax.persistence.Table;
 @Entity
 @Table(name = "tipo_valor")
 public class TipoValor {
-    
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id_tipo_valor")
@@ -19,11 +18,10 @@ public class TipoValor {
 
     @Column(name = "descricao", nullable = false)
     private String descricao;
-    
+
     @Column(name = "sigla", nullable = false)
     private String sigla;
 
-    
     public TipoValor() {
     }
 
@@ -42,7 +40,7 @@ public class TipoValor {
     public void setDescricao(String nome) {
         this.descricao = nome;
     }
-    
+
     public String getSigla() {
         return sigla;
     }

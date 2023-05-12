@@ -24,9 +24,7 @@ public class ItemController {
     @GetMapping("itens")
     public String index(Model model) {
         model.addAttribute("itens", util.getItens());
-        if (util.getVERSION().startsWith("build")) {
-            model.addAttribute("version", util.getVERSION());
-        }
+
         return "indexItem";
     }
 

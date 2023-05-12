@@ -27,9 +27,7 @@ public class PagarController  {
         contaAtiva = util.getContaPorId(util.getIdContaAtiva());
         model.addAttribute("conta", contaAtiva);
         model.addAttribute("participantes", util.getParticipantesPorContaPagar(util.getIdContaAtiva()));
-        if (util.getVERSION().startsWith("build")) {
-            model.addAttribute("version", util.getVERSION());
-        }
+
         return "pagar";
     }
 
