@@ -17,6 +17,10 @@
                 border-color: #c7c7c7;
                 border-radius: 20px;
             }
+
+            .btn-outline-danger {
+                border-radius: 20px;
+            }
         </style>
 
         <script>
@@ -67,8 +71,14 @@
                 </div>
 
                 <div class="row" style="margin-top: 30px;">
-                    <div class="col-sm-12">
+                    <div class="col-md-6">
                         <input type="submit" value="Salvar" class="col-sm-12 btn btn-outline-secondary" id="saveButton">
+                    </div>
+
+                    <div class="col-md-6">
+                        <a class="col-md-12 btn btn-outline-danger" th:href="@{/cancelarItem}">
+                            Cancelar
+                        </a>
                     </div>
                 </div>
 

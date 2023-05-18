@@ -77,6 +77,18 @@ public class ParticipanteController {
         model.addAttribute("adicionais", util.getValoresAdicionaisPorConta(new Long(contaAtiva.getIdConta())));
         return "ratear";
     }
+    
+    @GetMapping("cancelarParticipante")
+    public String cancel(Model model) {
+        
+        contaAtiva = util.getContaPorId(util.getIdContaAtiva());
+        model.addAttribute("conta", contaAtiva);
+        model.addAttribute("participantes", util.getParticipantesPorConta(new Long(contaAtiva.getIdConta())));
+        model.addAttribute("itens", util.getItensPorConta(new Long(contaAtiva.getIdConta())));
+        model.addAttribute("adicionais", util.getValoresAdicionaisPorConta(new Long(contaAtiva.getIdConta())));
+        
+        return "ratear";
+    }
 
     public Conta getContaAtiva() {
         return contaAtiva;

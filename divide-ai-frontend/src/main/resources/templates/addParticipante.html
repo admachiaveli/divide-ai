@@ -15,17 +15,21 @@
                 border-color: #c7c7c7;
                 border-radius: 20px;
             }
+
+            .btn-outline-danger {
+                border-radius: 20px;
+            }
         </style>
     </head>
 
     <body class="bg-light">
         <div class="container w-50">
-            
+
             <div class="py-5">
                 <h1>Divide aí!</h1>
                 <p class="lead">Uma ferramenta simples para dividir a conta</p>
             </div>
-            
+
             <p class="alert alert-danger" role="alert" th:if="${error != null}" th:text="${error}" id="message" />
             <form action="saveParticipante" method="post" th:object="${participante}">
                 <div class="form-group row">
@@ -34,9 +38,19 @@
                         <input th:field="*{nome}" class="form-control" id="nome">
                     </div>
                 </div>
-                <input type="submit" value="Salvar" class="col-sm-12 btn btn-outline-secondary" id="saveButton">
+                <div class="row">
+                    <div class="col-md-6">
+                        <input type="submit" value="Salvar" class="col-md-12 btn btn-outline-secondary" id="saveButton">
+                    </div>
+
+                    <div class="col-md-6">
+                        <a class="col-md-12 btn btn-outline-danger" th:href="@{/cancelarParticipante}">
+                            Cancelar
+                        </a>
+                    </div>
+                </div>
             </form>
-            
+
         </div>
     </body>
 
